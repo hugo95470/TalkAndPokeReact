@@ -5,8 +5,11 @@ import NavBarre from '../Components/NavBarre';
 import TopBarre from '../Components/TopBarre';
 import AfficheCollectionview from '../Components/AfficheCollectionView';
 import AffinitesCollectionView from '../Components/AffinitesCollectionView';
+import VerifConnexion from '../Components/VerifConnexion';
 
 function MainPage({ navigation }) {
+
+    VerifConnexion();
 
     var headerFlatList = () => {
 
@@ -15,8 +18,8 @@ function MainPage({ navigation }) {
             <View>
                 <Text style={styles.title}>Affinitées</Text>
 
-                <ScrollView horizontal={true} style={{height: 150}} showsHorizontalScrollIndicator={false}>
-                    <AffinitesCollectionView/>
+                <ScrollView horizontal={true} style={{height: 150, marginTop: 15}} showsHorizontalScrollIndicator={false}>
+                    <AffinitesCollectionView navigation={navigation}/>
                 </ScrollView>
 
                 <Text style={styles.title}>News</Text>
@@ -31,10 +34,10 @@ function MainPage({ navigation }) {
             <View>
 
                 <View style={styles.container}>
-                    <TopBarre/>
+                    <TopBarre navigation={navigation}/>
 
-                    <ImageBackground source={require('../Images/Pluie.png')} resizeMode="cover" style={styles.image}>
-                        <AfficheCollectionview header={headerFlatList}/>
+                    <ImageBackground  resizeMode="cover" style={styles.image}>
+                        <AfficheCollectionview header={headerFlatList} navigation={navigation}/>
                     </ImageBackground>
 
                 </View>
@@ -61,7 +64,7 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 25,
         marginLeft: 10,
-        color: 'white',
+        color: 'black',
       },
   })
 

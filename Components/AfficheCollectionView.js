@@ -1,27 +1,29 @@
 import React from 'react';
-import { StyleSheet, View, Image, TouchableOpacity, FlatList, Text, ImageBackground, ScrollView} from 'react-native';
+import { StyleSheet, View, Image, TouchableOpacity, FlatList, Text, ImageBackground} from 'react-native';
 import { useEffect, useState } from 'react';
+import { BlurView } from 'expo-blur';
 
-function AfficheCollectionView({header}) {
+function AfficheCollectionView(props) {
 
         //AFFICHAGE DES NEWS
         
         //Affiches
         var [affiches, setAffiches] = useState("");
 
+
                 
         var ItemAffiche = ({ title, image, oeuvreId, categorie }) => {
 
-            //var Image = require('../Images/Illustration' + categorie + '.png');
-
             return(
-                <TouchableOpacity activeOpacity={1} onPress={() => navigation.navigate('DetailsOeuvrePage', {OeuvreId: oeuvreId})}>
-                    <ImageBackground imageStyle={{ borderRadius: 15}} source={{uri: image}} resizeMode="cover" style={styles.affiche}>
-                    <Image style={{height: 50, width: 50, margin: 20, borderRadius: 100}} source={ require('../Images/IllustrationLieu.png')}/>
-                        <View style={styles.TitreContainer}>
-                            <Text style={styles.Titre} blurRadius={1}>{title}</Text>
-                        </View>
-                    </ImageBackground>
+                <TouchableOpacity activeOpacity={1} onPress={() => props.navigation.navigate('DetailsOeuvrePage', {OeuvreId: oeuvreId})}>
+                    <View style={styles.shadow}>
+                        <ImageBackground imageStyle={{ borderRadius: 15}} source={{uri: image}} resizeMode="cover" style={styles.affiche}>
+                            <Image style={{height: 50, width: 50, margin: 10, marginBottom: 220, borderRadius: 100}} source={{uri: 'https://hugocabaret.onthewifi.com/TalkAndPoke/Affiches/illustrations/Illustration' + categorie + '.jpg'}}/>
+                            <BlurView intensity={250} style={styles.TitreContainer}>
+                                <Text style={styles.Titre} blurRadius={1}>{title}</Text>
+                            </BlurView>
+                        </ImageBackground>
+                    </View>
                 </TouchableOpacity>
             );
         }
@@ -36,7 +38,7 @@ function AfficheCollectionView({header}) {
         //CHARGER LES NEWS
         useEffect(() => {
 
-            fetch('https://hugocabaret.onthewifi.com/TalkAndPoke/API/requetes/News/getNews.php?UtilisateurId=8&Date=2021-06-12 00:00:00&Nombre=10')
+            fetch('https://hugocabaret.onthewifi.com/TalkAndPoke/API/requetes/News/getNews.php?UtilisateurId=8&Date=2021-06-12 00:00:00&Nombre=20')
             .then((response) => response.json())
             .then((data) => {
                 setAffiches(data)
@@ -46,7 +48,7 @@ function AfficheCollectionView({header}) {
 
         //Cherger nouvelles News
         loadAffiches = () => {
-            fetch('https://hugocabaret.onthewifi.com/TalkAndPoke/API/requetes/News/getNews.php?UtilisateurId=8&Date=2021-06-12 00:00:00&Nombre=10')
+            fetch('https://hugocabaret.onthewifi.com/TalkAndPoke/API/requetes/News/getNews.php?UtilisateurId=8&Date=2021-06-12 00:00:00&Nombre=20')
             .then((response) => response.json())
             .then((data) => {
 
@@ -59,7 +61,7 @@ function AfficheCollectionView({header}) {
 
         return (
 
-            <FlatList ListHeaderComponent={header} data={affiches} renderItem={renderItemAffiche} keyExtractor={item => item.OeuvreId} numColumns="2" onEndReachedThreshold={0.3} onEndReached={() =>{loadAffiches()}}/>
+            <FlatList ListHeaderComponent={props.header} data={affiches} renderItem={renderItemAffiche} keyExtractor={item => item.OeuvreId} numColumns="2" onEndReachedThreshold={0.3} onEndReached={() =>{loadAffiches()}}/>
 
         )
 }
@@ -67,13 +69,17 @@ function AfficheCollectionView({header}) {
 const styles = StyleSheet.create({
     
     TitreContainer: {
-        padding: 10,
-        marginBottom: -20,
-        marginRight: -20,
-        position: 'absolute', right: '0%', bottom: '0%',
+        padding: 0,
+        paddingHorizontal: 5,
+        paddingVertical: 5,
+        minWidth: 100,
+        marginRight: -9,
+        position: 'absolute', right: '5%', bottom: '5%',
+        borderTopLeftRadius: 100,
+        borderBottomLeftRadius: 100,
+        elevation: 3,
     },
     Titre: {
-        backgroundColor: "#fff",
         borderRadius: 19,
         padding: 10,
         width: 'auto',
@@ -81,9 +87,6 @@ const styles = StyleSheet.create({
     affiche: {
         height: 280,
         width: 170,
-        marginTop: 20,
-        marginLeft: 10,
-        marginRight: 10,
         justifyContent: 'flex-end',
     },
     containerAffiches: {
@@ -91,6 +94,24 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
       },
+      shadow: {
+          borderRadius: 19,
+        marginTop: 20,
+        marginLeft: 10,
+        marginRight: 10,
+        height: 280,
+        width: 170,
+        backgroundColor : '#0000',
+        shadowColor: 'black',
+        shadowOffset: {
+            width: 10,
+            height: 10,
+        },
+        shadowOpacity: 1,
+        shadowRadius: 9.51,
+
+        elevation: 15, 
+    },
 })
 
 

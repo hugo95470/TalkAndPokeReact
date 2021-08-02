@@ -1,18 +1,22 @@
 import React from 'react';
-import { StyleSheet, TouchableOpacity, FlatList, Text, ImageBackground} from 'react-native';
+import { StyleSheet, TouchableOpacity, FlatList, Text, Image, View} from 'react-native';
 import { useEffect, useState } from 'react';
+import { BlurView } from 'expo-blur';
 
 
-function AffinitesCollectionView() {
+function AffinitesCollectionView(props) {
 
          //AFFICHAGE DES AFFINITES
          var [affinites, setAffinites] = useState("");
 
                 
         var ItemAffinite = ({ pseudo, image, pourcentage, contactId }) => (
-            <TouchableOpacity style={{marginLeft: 10, marginRight: 10}} activeOpacity={1} onPress={() => navigation.navigate('DetailsOeuvrePage', {ContactId: contactId})}>
-                <ImageBackground imageStyle={{ borderRadius: 100}} source={{uri: image}} resizeMode="cover" style={styles.affiniteImage}/>
-                <Text style={{marginLeft: 'auto', marginRight: 'auto', color: 'white'}} blurRadius={1}>{pseudo} - {pourcentage}%</Text>
+            
+            <TouchableOpacity style={{marginLeft: 10, marginRight: 10}} onPress={() => props.navigation.navigate('MessagePage', {utilisateurId: contactId})}>
+                <View style={styles.shadow}>
+                    <Image source={{uri: image}} resizeMode="cover" style={styles.affiniteImage}/>
+                    <Text style={{marginLeft: 'auto', marginRight: 'auto', color: 'black', textAlign: 'center'}}>{pseudo} - {pourcentage}%</Text>
+                </View>
             </TouchableOpacity>
         );
 
@@ -55,19 +59,35 @@ const styles = StyleSheet.create({
         color: 'white',
       },
       affiniteImage: {
-          height: 80,
-          width: 80,
-          marginTop: 20,
-          marginBottom: 5,
+        height: 80,
+        width: 80,
           marginLeft: 'auto',
           marginRight: 'auto',
           justifyContent: 'flex-end',
+          borderRadius: 100,          
       },
     containerAffiches: {
         flexDirection:'row',
         justifyContent: 'center',
         alignItems: 'center',
       },
+      TitreContainer: {
+        padding: 10,
+        paddingHorizontal: 20,
+        borderRadius: 100,
+    },
+    shadow: {
+        height: 84,
+        width: 84,
+        padding: 2,
+        backgroundColor: 'white',
+        borderRadius: 100, 
+        elevation: 10, 
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 1,
+        shadowRadius: 1,  
+    },
 })
 
 

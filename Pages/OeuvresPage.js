@@ -1,36 +1,16 @@
 import React from 'react';
-import { Image, StyleSheet, Text, ImageBackground, View, FlatList, TouchableOpacity } from 'react-native';
-import { useEffect, useState } from 'react';
+import { StyleSheet, Text, ImageBackground, View, FlatList, TouchableOpacity, Image, ScrollView } from 'react-native';
 import { LinearGradient } from "expo-linear-gradient";
 
 import NavBarre from '../Components/NavBarre';
-import { ScrollView } from 'react-native-gesture-handler';
-import ReactionsView from '../Components/ReactionsView';
-import LiensView from '../Components/LiensView'
+import TopBarre from '../Components/TopBarre';
+import AfficheCollectionview from '../Components/AfficheCollectionView';
+import AffinitesCollectionView from '../Components/AffinitesCollectionView';
+
+function OeuvresPage({ route, navigation }) {
     
+    const { OeuvreType } = route.params;
 
-    const DetailsOeuvrePage = ({ route, navigation }) => {
-
-        const { OeuvreId } = route.params;
-
-        var [affiche, setAffiche] = useState("");
-
-        var [news, setNews] = useState("");
-
-
-        //Charger la photo de L'utilisateur
-        useEffect(() => {
-
-            fetch('https://hugocabaret.onthewifi.com/TalkAndPoke/API/requetes/Oeuvre/GetInfosOeuvres.php?OeuvreId=' + OeuvreId)
-            .then((response) => response.json())
-            .then((data) => setAffiche(data));
-
-            fetch('https://hugocabaret.onthewifi.com/TalkAndPoke/API/requetes/Oeuvre/GetInfosOeuvres.php?OeuvreId=' + OeuvreId)
-            .then((response) => response.json())
-            .then((data) => setNews(data));
-            
-        }, []);
-    
         return (
 
             <View>
@@ -38,24 +18,24 @@ import LiensView from '../Components/LiensView'
                 <View style={styles.container}>
                     {/* <TopBarre/> */}
 
-                    <ImageBackground source={{uri : affiche.Image}} style={styles.image}>
+                    
+                    <ImageBackground style={{height: '100%'}}>
+                        <ImageBackground source={{uri : 'https://hugocabaret.onthewifi.com/TalkAndPoke/Affiches/illustrations/Illustration' + OeuvreType + '.png'}} style={styles.image}>
+                            
+                        </ImageBackground>
+                        <ScrollView>
 
-                        <ScrollView >
-
-                            <LinearGradient style={{height: 700}} colors={['rgba(0,0,0,0)','#000']}>
+                            <LinearGradient style={{height: 400}} colors={['rgba(0,0,0,0)','#000']}>
 
                             <TouchableOpacity style={{backgroundColor: '#fffa', height: 50, width: 50, marginTop: 50, marginLeft: 20, borderRadius: 100}} onPress={() => navigation.pop()}>
                                 <Image style={{height: 50, width: 50, opacity: 0.5}} source={{uri: 'https://www.esnaturopathiemaroc.com/wp-content/uploads/2017/11/chevron_left_black.png'}}/>
                             </TouchableOpacity>
 
-                            <Text style={{marginTop: 'auto', marginBottom: 0, marginLeft: 30, fontSize: 30, color: 'white'}}>{affiche.Titre}</Text>
-                            <Text style={styles.TitreBlanc}>{affiche.Description}</Text>
 
                             </LinearGradient>
 
                             <View style={{backgroundColor: 'black'}}>
                                 <View style={{backgroundColor: 'white', borderTopLeftRadius: 30, borderTopRightRadius: 30}}>
-                                    <ReactionsView/>
 
                                     <View style={{flexDirection: 'row', margin: 15}}>
 
@@ -75,7 +55,6 @@ import LiensView from '../Components/LiensView'
 
                                     <Text style={styles.TitreNoir}>News</Text>
 
-                                    <LiensView navigation={navigation} oeuvreId={OeuvreId}/>
 
                                     <View style={{height: 300}}/>
 
@@ -102,37 +81,21 @@ import LiensView from '../Components/LiensView'
 
 const styles = StyleSheet.create({
     container: {
-        height: '100%',
-        width: '100%',
+      height: '100%',
+      width: '100%',
     },
     image: {
-        height: '93%',
+        position: 'absolute',
+        height: '70%',
         width: '100%',
         resizeMode: 'cover',
         justifyContent: 'center',
     },
-    affiche: {
-        height: 450,
-        width: 300,
-        marginTop: 20,
-        marginLeft: 'auto',
-        marginRight: 'auto',
-        marginBottom: 50,
-        justifyContent: 'flex-end',
-    },
-    TitreContainer: {
-        padding: 10,
-        marginBottom: -20,
-        marginRight: -20,
-        position: 'absolute', right: '0%', bottom: '0%',
-        backgroundColor: 'white',
-        borderRadius: 100,
-    },
     title: {
-        margin: 10,
-        marginBottom: 10,
-        fontSize: 20,
-    },
+        fontSize: 25,
+        marginLeft: 10,
+        color: 'black',
+      },
     TitreBlanc: {
         margin: 30,
         fontSize: 20,
@@ -143,14 +106,6 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color: 'black'
     },
-    containerReaction: {
-        flex: 1,
-        justifyContent: 'space-between',
-        backgroundColor: '#ecf0f1',
-        padding: 8,
-        flexDirection:'row',
-        alignItems:'center'
-    },    
     follow: {
         marginRight: 'auto',
         marginLeft: 'auto',
@@ -159,7 +114,7 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color: 'white',
     }
-  });
+  })
 
-  
-export default DetailsOeuvrePage
+  export default OeuvresPage;
+
